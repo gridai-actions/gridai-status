@@ -16,8 +16,8 @@ inputs:
 outputs:
   obj_status:
     value: ${{ steps.gridai_obj_status.outputs.obj_status }}
-  exit_code:
-    value: ${{ steps.gridai_obj_status.outputs.exit_code }}
+  ovj_exit_code:
+    value: ${{ steps.gridai_obj_status.outputs.obj_exit_code }}
 runs:
   using: "composite"
   steps:
