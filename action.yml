@@ -1,0 +1,27 @@
+# composite action must be 
+#  named action.yml or action.yaml
+#  create a Tag and a Release for our repo.
+name: 'Hello World'
+description: 'Greet someone'
+inputs:
+  obj_type:  # id of input
+    required: true
+    default: ""
+  obj_id:  # id of input
+    required: true
+    default: ""
+  script_args:
+    required: false
+    default: ""
+outputs:
+  obj_status:
+    value: ${{ steps.gridai_obj_status.outputs.obj_status }}
+  exit_code:
+    value: ${{ steps.gridai_obj_status.outputs.exit_code }}
+runs:
+  using: "composite"
+  steps:
+    - id: gridai_obj_status
+      run: ${{ github.action_path }}/gridai_obj_status.sh ${{ inputs.script_args }} ${{ inputs.obj_type }} ${{ inputs.obj_id }}
+      shell: bash
+
