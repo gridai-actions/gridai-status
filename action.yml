@@ -1,15 +1,14 @@
-# composite action must be 
-#  named action.yml or action.yaml
-#  create a Tag and a Release for our repo.
-name: 'Hello World'
-description: 'Greet someone'
+name: 'Grid.ai Status'
+description: 'Grid.ai Status'
 inputs:
   obj-type:  # id of input
     required: true
     default: ""
+    description: "[run, datastore, session, cluster]"
   obj-id:  # id of input
     required: true
     default: ""
+    description: "grid identifier from the grid run, grid datastore, grid session, grid cluster"
   script-args:
     required: false
     default: ""
