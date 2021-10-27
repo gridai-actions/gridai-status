@@ -4,24 +4,26 @@
 name: 'Hello World'
 description: 'Greet someone'
 inputs:
-  obj_type:  # id of input
+  obj-type:  # id of input
     required: true
     default: ""
-  obj_id:  # id of input
+  obj-id:  # id of input
     required: true
     default: ""
-  script_args:
+  script-args:
     required: false
     default: ""
 outputs:
-  obj_status:
-    value: ${{ steps.gridai_obj_status.outputs.obj_status }}
-  ovj_exit_code:
-    value: ${{ steps.gridai_obj_status.outputs.obj_exit_code }}
+  obj-status:
+    value: ${{ steps.gridai-obj-status.outputs.obj-status }}
+  obj-summary:
+    value: ${{ steps.gridai-obj-status.outputs.obj-summary }}
+  ovj-exit-code:
+    value: ${{ steps.gridai-obj-status.outputs.obj-exit-code }}
 runs:
   using: "composite"
   steps:
-    - id: gridai_obj_status
-      run: ${{ github.action_path }}/gridai_obj_status.sh ${{ inputs.script_args }} ${{ inputs.obj_type }} ${{ inputs.obj_id }}
+    - id: gridai-obj-status
+      run: ${{ github.action-path }}/gridai_obj_status.sh ${{ inputs.script-args }} ${{ inputs.obj-type }} ${{ inputs.obj-id }}
       shell: bash
 

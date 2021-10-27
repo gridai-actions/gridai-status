@@ -193,9 +193,9 @@ done
 echo "${OBJ_TYPE}:${OBJ_ID}:${OBJ_SUMMARY}" 
 
 # return the last status code
-echo "::set-output name=obj_summary::${OBJ_SUMMARY}"
-echo "::set-output name=obj_status::${OBJ_STATUS}"
-echo "::set-output name=obj_exit_code::${RC}"
+echo "::set-output name=obj-summary::${OBJ_SUMMARY}"
+echo "::set-output name=obj-status::${OBJ_STATUS}"
+echo "::set-output name=obj-exit-code::${RC}"
 
 # TODO: workaround until we figure out how to use the above
 echo "obj_summary=${OBJ_SUMMARY}" >> $GITHUB_ENV
