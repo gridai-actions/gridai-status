@@ -15,10 +15,16 @@ inputs:
 outputs:
   obj-status:
     value: ${{ steps.gridai-obj-status.outputs.obj-status }}
+    description: "comma delimited status all of experiments. ex: succeeded,succeeded,stopped"
+  obj-tally:
+    value: ${{ steps.gridai-obj-status.outputs.obj-tally }}
+    description: "comma delimited tally status codes. ex: 2 succeeded,1 stopped"
   obj-summary:
     value: ${{ steps.gridai-obj-status.outputs.obj-summary }}
-  ovj-exit-code:
+    description: "comma delimited unique status codes. ex: succeeded,stopped"
+  obj-exit-code:
     value: ${{ steps.gridai-obj-status.outputs.obj-exit-code }}
+    description: "0 if exited finding the supplied status, 1 otherwise"
 runs:
   using: "composite"
   steps:
