@@ -194,6 +194,8 @@ done
 echo "${OBJ_TYPE}:${OBJ_ID}:${OBJ_SUMMARY}" 
 
 # return the last status code
+echo "::set-output name=obj-type::${${OBJ_TYPE}}"
+echo "::set-output name=obj-id::${OBJ_ID}"
 echo "::set-output name=obj-summary::${OBJ_SUMMARY}"
 echo "::set-output name=obj-tally::${OBJ_TALLY}"
 echo "::set-output name=obj-status::${OBJ_STATUS}"
