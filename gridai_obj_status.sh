@@ -96,7 +96,7 @@ case $OBJ_TYPE in
     OBJ_STATUS_COL=4 
     ;;
   session)    
-    TARGET_STATE="failed|stopped|paused" 
+    TARGET_STATE="running|failed|stopped|paused" 
     OBJ_ID_COL=2 
     OBJ_STATUS_COL=3
     OBJ_DURATION_COL=5
