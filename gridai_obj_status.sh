@@ -152,15 +152,6 @@ while [ $CMD_POL_CNT -lt $MAX_POL_CNT ]; do
   GRID_CMD_STATUS=$?
   cat grid.status.log | awk -F'[│|\|]' '{gsub(/^[ \t]+|[ \t]+$/, "", $i); gsub(/^[ \t]+|[ \t]+$/, "", $s); if ( $i ~ o ) print $s; }' i=$OBJ_ID_COL s=$OBJ_STATUS_COL o=$OBJ_ID_EXP > grid.tally.log
 
-  # workaround windows bug UnicodeEncodeError
-  if [[ $GRID_CMD_STATUS != 0 ]]; then  
-    cat grid.status.err
-    if [ ! -z "$(grep "^UnicodeEncodeError" grid.status.err)" ]; then
-      DEBUG "Ignoring UnicodeEncodeError and continuing"
-      cat grid.status.log     
-      GRID_CMD_STATUS=0  
-    fi
-  fi
   # nuber of entries in STOP
   TOTAL_ENTRIES=$((`cat grid.tally.log | wc -l`))
   TOTAL_MATCH=$((`egrep -w -e "$TARGET_STATE" grid.tally.log | wc -l`))
@@ -172,12 +163,18 @@ while [ $CMD_POL_CNT -lt $MAX_POL_CNT ]; do
   # exit condition checks
   if [[ $GRID_CMD_STATUS != 0 ]]; then 
       DEBUG "cmd failed"
+      echo cat grid.status.log
       cat grid.status.log
+      echo grid.status.err
+      cat grid.status.err
       (( CMD_ERR_CNT = CMD_ERR_CNT + 1 )); 
       if [[ MAX_ERR_CNT -gt 0 && CMD_ERR_CNT -ge MAX_ERR_CNT ]]; then break; fi 
   elif [[ $TOTAL_ENTRIES == 0 ]]; then
       DEBUG "id NOT found"
+      echo cat grid.status.log
       cat grid.status.log
+      echo grid.status.err
+      cat grid.status.err
       (( CMD_NOID_CNT = CMD_NOID_CNT + 1 )); 
       if [[ MAX_NOID_CNT -gt 0 && CMD_NOID_CNT -ge MAX_NOID_CNT ]]; then break; fi   
   elif [[ $TOTAL_MATCH == 0 ]]; then
