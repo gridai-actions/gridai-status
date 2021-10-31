@@ -150,7 +150,15 @@ while [ $CMD_POL_CNT -lt $MAX_POL_CNT ]; do
 
   # save the command status and output
   GRID_CMD_STATUS=$?
-  cat grid.status.log | awk -F'[│|]' '{gsub(/^[ \t]+|[ \t]+$/, "", $i); gsub(/^[ \t]+|[ \t]+$/, "", $s); if ( $i ~ o ) print $s; }' i=$OBJ_ID_COL s=$OBJ_STATUS_COL o=$OBJ_ID_EXP > grid.tally.log
+  # hack to change how the delim is setup https://docs.github.com/en/actions/learn-github-actions/environment-variables
+  case "${RUNNER_OS}" in  
+    Windows)
+      cat grid.status.log | awk -F'|' '{gsub(/^[ \t]+|[ \t]+$/, "", $i); gsub(/^[ \t]+|[ \t]+$/, "", $s); if ( $i ~ o ) print $s; }' i=$OBJ_ID_COL s=$OBJ_STATUS_COL o=$OBJ_ID_EXP > grid.tally.log
+      ;;
+    *)
+      cat grid.status.log | awk -F'│' '{gsub(/^[ \t]+|[ \t]+$/, "", $i); gsub(/^[ \t]+|[ \t]+$/, "", $s); if ( $i ~ o ) print $s; }' i=$OBJ_ID_COL s=$OBJ_STATUS_COL o=$OBJ_ID_EXP > grid.tally.log
+      ;;
+  esac
 
   # nuber of entries in STOP
   TOTAL_ENTRIES=$((`cat grid.tally.log | wc -l`))
