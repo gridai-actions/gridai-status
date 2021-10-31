@@ -128,19 +128,19 @@ while [ $CMD_POL_CNT -lt $MAX_POL_CNT ]; do
   case $OBJ_TYPE in
     run)
       OBJ_ID_EXP="^${OBJ_ID}-exp[0-9]+$"
-      export COLUMNS=$MAX_TERM_COLS; grid status ${OBJ_ID} > grid.status.log 2>&1
+      export COLUMNS=$MAX_TERM_COLS; grid status ${OBJ_ID} > grid.status.log 2>grid.status.err
       ;;
     session)
       OBJ_ID_EXP="^${OBJ_ID}$"
-      export COLUMNS=$MAX_TERM_COLS; grid session > grid.status.log 2>&1
+      export COLUMNS=$MAX_TERM_COLS; grid session > grid.status.log 2>grid.status.err
       ;;
     datastore)
       OBJ_ID_EXP="^${OBJ_ID}$"
-      export COLUMNS=$MAX_TERM_COLS; grid datastore > grid.status.log 2>&1
+      export COLUMNS=$MAX_TERM_COLS; grid datastore > grid.status.log 2>grid.status.err
       ;;
     cluster) 
       OBJ_ID_EXP="^${OBJ_ID}$"
-      export COLUMNS=$MAX_TERM_COLS; grid clusters > grid.status.log 2>&1
+      export COLUMNS=$MAX_TERM_COLS; grid clusters > grid.status.log 2>grid.status.err
       ;;
     *) 
       usage 
@@ -150,11 +150,12 @@ while [ $CMD_POL_CNT -lt $MAX_POL_CNT ]; do
 
   # save the command status and output
   GRID_CMD_STATUS=$?
-  cat grid.status.log | awk -F│ '{gsub(/^[ \t]+|[ \t]+$/, "", $i); gsub(/^[ \t]+|[ \t]+$/, "", $s); if ( $i ~ o ) print $s; }' i=$OBJ_ID_COL s=$OBJ_STATUS_COL o=$OBJ_ID_EXP > grid.tally.log
+  cat grid.status.log | awk -F'[│|\|]' '{gsub(/^[ \t]+|[ \t]+$/, "", $i); gsub(/^[ \t]+|[ \t]+$/, "", $s); if ( $i ~ o ) print $s; }' i=$OBJ_ID_COL s=$OBJ_STATUS_COL o=$OBJ_ID_EXP > grid.tally.log
 
   # workaround windows bug UnicodeEncodeError
   if [[ $GRID_CMD_STATUS != 0 ]]; then  
-    if [ ! -z "$(grep "^UnicodeEncodeError" grid.status.log)" ]; then
+    cat grid.status.err
+    if [ ! -z "$(grep "^UnicodeEncodeError" grid.status.err)" ]; then
       DEBUG "Ignoring UnicodeEncodeError and continuing"
       cat grid.status.log     
       GRID_CMD_STATUS=0  
