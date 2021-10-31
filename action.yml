@@ -29,6 +29,6 @@ runs:
   using: "composite"
   steps:
     - id: gridai-obj-status
-      run: ${{ github.action_path }}/gridai_obj_status.sh ${{ inputs.script-args }} ${{ inputs.obj-type }} ${{ inputs.obj-id }}
+      run: cd ${{ github.action_path }} && gridai_obj_status.sh ${{ inputs.script-args }} ${{ inputs.obj-type }} ${{ inputs.obj-id }}
       shell: bash
 
