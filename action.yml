@@ -13,6 +13,12 @@ inputs:
     required: false
     default: ""
 outputs:
+  obj-id:
+    value: ${{ steps.gridai-obj-status.outputs.obj-id }}
+    description: "obj id searched for"
+  obj-type:
+    value: ${{ steps.gridai-obj-status.outputs.obj-status }}
+    description: "obj type searched for"      
   obj-status:
     value: ${{ steps.gridai-obj-status.outputs.obj-status }}
     description: "comma delimited status all of experiments. ex: succeeded,succeeded,stopped"
