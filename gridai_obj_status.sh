@@ -46,7 +46,7 @@ CMD_SOME_CNT=0
 POLL_SEC_INTERVAL=60
 SOME_THRESHOLD_PERCENT=100  # TODO
 TARGET_STATE=
-VERBOSE=
+VERBOSE=1
 
 # grid cli truncates names and status when col is too small
 MAX_TERM_COLS=512 # used to set stty cols $MAX_TERM_COLS
@@ -152,6 +152,14 @@ while [ $CMD_POL_CNT -lt $MAX_POL_CNT ]; do
   GRID_CMD_STATUS=$?
   cat grid.status.log | awk -F│ '{gsub(/^[ \t]+|[ \t]+$/, "", $i); gsub(/^[ \t]+|[ \t]+$/, "", $s); if ( $i ~ o ) print $s; }' i=$OBJ_ID_COL s=$OBJ_STATUS_COL o=$OBJ_ID_EXP > grid.tally.log
 
+  # workaround windows bug UnicodeEncodeError
+  if [[ $GRID_CMD_STATUS != 0 ]]; then  
+    if [ ! -z "$(grep "^UnicodeEncodeError" grid.status.log)" ]; then
+      DEBUG "Ignoring UnicodeEncodeError and continuing"
+      cat grid.status.log     
+      GRID_CMD_STATUS=0  
+    fi
+  fi
   # nuber of entries in STOP
   TOTAL_ENTRIES=$((`cat grid.tally.log | wc -l`))
   TOTAL_MATCH=$((`egrep -w -e "$TARGET_STATE" grid.tally.log | wc -l`))
