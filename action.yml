@@ -28,7 +28,11 @@ outputs:
 runs:
   using: "composite"
   steps:
+    -run: |
+        echo "${{ github.action_path }} " >> $GITHUB_PATH
+      shell: bash  
+
     - id: gridai-obj-status
-      run: cd ${{ github.action_path }} && gridai_obj_status.sh ${{ inputs.script-args }} ${{ inputs.obj-type }} ${{ inputs.obj-id }}
+      run: gridai_obj_status.sh ${{ inputs.script-args }} ${{ inputs.obj-type }} ${{ inputs.obj-id }}
       shell: bash
 
